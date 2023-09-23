@@ -1,5 +1,6 @@
 const express = require("express");
 const { connection } = require("./db");
+const cors=require("cors")
 require('dotenv').config();
 
 
@@ -9,6 +10,7 @@ const { noteRouter } = require("./routes/postroutes");
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 // const {connection}=require("./db")
 app.get("/", (req, res) => {
  
