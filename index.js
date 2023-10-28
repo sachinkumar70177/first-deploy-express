@@ -2,8 +2,6 @@ const express = require("express");
 const { connection } = require("./db");
 const cors=require("cors")
 require('dotenv').config();
-
-
 // const { auth } = require("./Middleware/auth.middleware");
 const { userRouter } = require("./routes/userroutes");
 const { noteRouter } = require("./routes/postroutes");
@@ -20,8 +18,6 @@ app.get("/", (req, res) => {
     res.status(400).send({ msg: "bhaago" });
   }
 });
-
-
 
 app.use("/user",userRouter)
 app.use("/note",noteRouter)

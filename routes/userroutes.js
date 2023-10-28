@@ -1,12 +1,9 @@
 const express = require("express");
-// const { connection } = require("./db");
-
 const bcrypt = require("bcrypt");
-var jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const { UserModel } = require("../model/usermodel");
 const { auth } = require("../middleware/auth");
 
-// const { auth } = require("./Middleware/auth.middleware");
 const userRouter = express.Router();
 
 userRouter.post("/register", async (req, res) => {
@@ -25,35 +22,32 @@ userRouter.post("/register", async (req, res) => {
 userRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await UserModel.find({ email });
-    if (user.length > 0) {
-      bcrypt.compare(password, user[0].password, function (err, result) {
+    const user = await UserModel.findOne({ email });
+    if (user) {
+      bcrypt.compare(password, user.password, function (err, result) {
         if (result) {
           const token = jwt.sign(
-            { userId: user[0]._id, username: user[0].username },
+            { userId: user._id, username: user.username },
             "masai"
           );
-          res.json({ msg: "Login Successfull", token: token });
+          res.json({ msg: "Login Successful", token: token });
         } else {
-          res.json("Wrong Credntials");
+          res.json("Wrong Credentials");
         }
       });
     } else {
-      res.json("Wrong Credntials");
+      res.json("Wrong Credentials");
     }
   } catch (err) {
     res.json("Something went wrong");
     console.log(err);
   }
 });
-userRouter.get("/mo", auth, (req, res) => {
+
+userRouter.get("/movie", auth, (req, res) => {
   res.json("movie data......");
 });
 
 module.exports = {
   userRouter,
 };
-
-
-
-
